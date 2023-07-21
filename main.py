@@ -400,19 +400,3 @@ class CTkChart(ctk.CTkFrame):
                                      dash=[20], fill=self.indicator_line_color, capstyle="round", width=3)
         self.main_canvas.create_text(x2+5, y, anchor="w", text=title, fill=self.indicator_text_color,
                                      font=ctk.CTkFont("Arial", 15, "bold"))
-
-
-# test window
-if __name__ == '__main__':
-    window = ctk.CTk()
-    window.title("Calendar Widget")
-    ctk.set_appearance_mode("dark")
-
-    value = {'JJ': 5, 'OO': 0, 'WW': 7, 'TT': 3, 'GG': 15, 'FF': 10, 'HH': 1, 'PP': 12, "AA": 4}
-    CTkChart(window, value).pack(side="left", pady=20, padx=20)
-    CTkChart(window, value, corner_radius=20, fg_color="#032680", stat_color="#1D6FFF", chart_fg_color="#032680",
-             show_indicators=(False, True), stat_info_show=(False, True), chart_arrow="none", border_width=2,
-             border_color="white", indicator_line_color="#1942AC", indicator_text_color="#020F43", stat_width=15,
-             stat_title_color="#1D6FFF", chart_axis_width=3, width=300, height=200).pack(side="left", pady=20, padx=20)
-
-    window.mainloop()
