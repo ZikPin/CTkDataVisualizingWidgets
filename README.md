@@ -1,5 +1,5 @@
 # Custom-widgets-for-CTk
-Custom calendar, graph, chart, and scrollable frame widgets
+Custom calendar, graph and chart widgets
 
 ## Calendar widget
 A calendar widget consists of two parts title_bar and calendar frame. You can customize virtually everything in the widget. There is 
