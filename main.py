@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import calendar
 from datetime import datetime
+import tkinter as tk
 
 
 class CTkCalendar(ctk.CTkFrame):
@@ -9,7 +10,7 @@ class CTkCalendar(ctk.CTkFrame):
 
     If you do not define today_fg_color and today_text_color it will be rendered as other days
     """
-    def __init__(self, parent,
+    def __init__(self, master,
                  today_fg_color=None,
                  today_text_color=None,
                  width=250,
@@ -38,7 +39,7 @@ class CTkCalendar(ctk.CTkFrame):
                  calendar_text_fg_color=None,
                  calendar_label_pad=1):
 
-        super().__init__(master=parent,
+        super().__init__(master=master,
                          width=width,
                          height=height,
                          fg_color=fg_color,
@@ -160,18 +161,110 @@ class CTkCalendar(ctk.CTkFrame):
         return int(day), int(month), int(year)
 
 
+class CTkGraph(ctk.CTkFrame):
+    def __init__(self, master,
+                 data_values: list,
+                 fg_color="gray17",
+                 graph_fg_color="gray17",
+                 width=200,
+                 height=200,
+                 border_width=None,
+                 border_color=None,
+                 corner_radius=None,
+                 graph_color="gray20",
+                 graph_axis_width=3,
+                 graph_line_width=2,
+                 graph_axis_color="white",
+                 graph_line_color="white",
+                 graph_axis_arrow="last",
+                 title_font_family="Arial",
+                 title_font_size=16,
+                 title_text_color=None,
+                 title=None):
+
+        super().__init__(master=master, fg_color=fg_color, width=width, height=height, corner_radius=corner_radius,
+                         border_color=border_color, border_width=border_width)
+
+        # data
+        self.data_values = data_values
+        self.date = self.current_date()
+        self.date_display = self.date[:]
+        self.graph_fg_color = graph_fg_color
+        self.graph_color = graph_color
+        self.main_canvas = None
+
+        # graph data
+        self.width = width
+        self.height = height
+        self.graph_axis_width = graph_axis_width
+        self.graph_line_width = graph_line_width
+        self.graph_axis_color = graph_axis_color
+        self.graph_line_color = graph_line_color
+        self.graph_axis_arrow = graph_axis_arrow
+
+        # title data
+        self.title_font_family = title_font_family
+        self.title_font_size = title_font_size
+        self.title_text_color = title_text_color
+        self.title = title
+
+        # setting up
+        self.setup_stat()
+
+    def setup_stat(self):
+        if self.title is not None:
+            ctk.CTkLabel(self, text=self.title, text_color=self.title_text_color,
+                         font=ctk.CTkFont(self.title_font_family, self.title_font_size)).pack(fill="x", padx=10, pady=10)
+
+        self.main_canvas = ctk.CTkCanvas(self, background=self.graph_fg_color, bd=0, highlightthickness=0,
+                                         relief="ridge", width=self.width, height=self.height)
+
+        self.main_canvas.pack(expand=True, fill="both", padx=self._corner_radius//2, pady=self._corner_radius//2)
+
+        self.main_canvas.bind("<Configure>", lambda event: self.draw_stats(event.width, event.height))
+
+    def draw_stats(self, width, height):
+        # drawing graph lines
+        self.main_canvas.delete("all")
+
+        # axis for the graph
+        self.main_canvas.create_line(width * 0.05, height * 0.95, width * 0.05, height * 0.05, fill=self.graph_axis_color,
+                                     width=self.graph_axis_width, arrow=self.graph_axis_arrow)
+        self.main_canvas.create_line(width * 0.05, height * 0.95, width * 0.95, height * 0.95, fill=self.graph_axis_color,
+                                     width=self.graph_axis_width, arrow=self.graph_axis_arrow)
+
+        data_len = len(self.data_values)
+        max_value = max(self.data_values)
+        gap = (width - 15) // data_len
+        coordinates = [(width * 0.05, height * 0.95)]
+
+        for i in range(data_len):
+            h = height * 0.8 * self.data_values[i] / max_value
+            coordinates.append((width * 0.05 + gap * i, height * 0.95 - h))
+
+        else:
+            coordinates.append((width * 0.05 + gap * data_len - gap, height * 0.95))
+
+        self.main_canvas.create_polygon(coordinates, width=self.graph_line_width, fill=self.graph_color,
+                                        outline=self.graph_line_color)
+
+    def current_date(self) -> tuple[int, int, int]:
+        date = str(datetime.now()).split()
+        year, month, day = date[0].split("-")
+        return int(day), int(month), int(year)
+
+
 # test window
 if __name__ == '__main__':
     window = ctk.CTk()
     window.title("Calendar Widget")
     ctk.set_appearance_mode("dark")
-    # init calendar
-    calendar_widget = CTkCalendar(window, width=300, height=210, border_width=3, border_color="white",
-                                  fg_color="#020317", title_bar_border_width=3, title_bar_border_color="white",
-                                  title_bar_fg_color="#020F43", calendar_fg_color="#020F43", corner_radius=30,
-                                  title_bar_corner_radius=10, calendar_corner_radius=10, calendar_border_color="white",
-                                  calendar_border_width=3, calendar_label_pad=5,
-                                  today_fg_color="white", today_text_color="black")
-    calendar_widget.pack()
+
+    values = [49, 76, 61, 65, 51, 24, 9, 29, 53, 24]
+
+    CTkGraph(window, values).pack(side="left", padx=20, pady=20)
+
+    CTkGraph(window, values, width=250, height=200, fg_color="#FF7761", graph_color="#FF7761",
+             graph_fg_color="#FF5330", title="Screentime", title_font_size=30, corner_radius=20).pack(side="left", padx=20, pady=20)
 
     window.mainloop()
