@@ -29,3 +29,23 @@ calendar_widget.pack(side="left", padx=20)
 
 window.mainloop()
 ```
+
+## CTkGraph
+The graph widgets lets you visualize the list of integer values as a graph. You can customize almost every part, except for corner radius of canvas (where the graph is drawn). You can also set a custom title and define its family, size and color. If you do not define a title
+the widget will display only the graph
+
+Default view on left and with customization on the right:
+
+![image](https://github.com/ZikPin/Custom-widgets-for-CTk/assets/65452275/17b46820-d881-4f27-8ea9-7dd572d9d704)
+
+To use just define parent and supply with list of integers. Example code:
+```
+window = ctk.CTk()
+window.title("Calendar Widget")
+ctk.set_appearance_mode("dark")
+
+values = [49, 76, 61, 65, 51, 24, 9, 29, 53, 24]
+
+CTkGraph(window, values, width=250, height=200, fg_color="#FF7761", graph_color="#FF7761",
+         graph_fg_color="#FF5330", title="Screentime", title_font_size=30, corner_radius=20).pack(side="left", padx=20, pady=20)
+```
