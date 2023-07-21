@@ -35,7 +35,8 @@ class CTkCalendar(ctk.CTkFrame):
                  calendar_border_color=None,
                  calendar_corner_radius=None,
                  calendar_text_color=None,
-                 calendar_text_fg_color=None):
+                 calendar_text_fg_color=None,
+                 calendar_label_pad=1):
 
         super().__init__(master=parent,
                          width=width,
@@ -75,9 +76,10 @@ class CTkCalendar(ctk.CTkFrame):
         self.calendar_corner_radius = calendar_corner_radius
         self.calendar_text_fg_color = calendar_text_fg_color
         self.calendar_text_color = calendar_text_color
+        self.calendar_label_pad = calendar_label_pad
 
         # creating header and calendar frames
-        self.content_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.content_frame = ctk.CTkFrame(self, fg_color="transparent", width=width, height=height)
         self.content_frame.pack(expand=True, fill="both", padx=corner_radius/3, pady=corner_radius/3)
         self.setup_header_frame()
         self.create_calendar_frame()
@@ -93,9 +95,9 @@ class CTkCalendar(ctk.CTkFrame):
                       border_width=self.title_bar_button_border_width, font=ctk.CTkFont("Arial", 11, "bold"),
                       command=lambda: self.change_month(-1)).pack(side="left", padx=10)
         ctk.CTkLabel(header_frame, textvariable=self.month_label, font=ctk.CTkFont("Arial", 16, "bold"),
-                     fg_color="transparent").pack(side="left", fill="both", expand=True)
+                     fg_color="transparent").pack(side="left", fill="x", expand=True)
         ctk.CTkLabel(header_frame, textvariable=self.year_label, font=ctk.CTkFont("Arial", 16, "bold"),
-                     fg_color="transparent").pack(side="left", fill="both")
+                     fg_color="transparent").pack(side="left", fill="x")
         ctk.CTkButton(header_frame, text=">", width=25, fg_color=self.title_bar_button_fg_color,
                       hover_color=self.title_bar_button_hover_color, border_color=self.title_bar_button_border_color,
                       border_width=self.title_bar_button_border_width, font=ctk.CTkFont("Arial", 11, "bold"),
@@ -131,7 +133,8 @@ class CTkCalendar(ctk.CTkFrame):
 
                     self.labels_by_date[(current_month[row][column], self.month, self.year)] = label
 
-                    label.grid(row=row, column=column, sticky="nsew", padx=1)
+                    label.grid(row=row, column=column, sticky="nsew", padx=self.calendar_label_pad,
+                               pady=self.calendar_label_pad)
 
         calendar_frame.place(relx=0.5, rely=0.97, anchor="s", relheight=0.75, relwidth=0.95)
 
@@ -160,11 +163,15 @@ class CTkCalendar(ctk.CTkFrame):
 # test window
 if __name__ == '__main__':
     window = ctk.CTk()
-    window.title("Custom widgets for ctk")
-    window.geometry("600x400")
+    window.title("Calendar Widget")
     ctk.set_appearance_mode("dark")
     # init calendar
-    calendar_widget = CTkCalendar(window)
+    calendar_widget = CTkCalendar(window, width=300, height=210, border_width=3, border_color="white",
+                                  fg_color="#020317", title_bar_border_width=3, title_bar_border_color="white",
+                                  title_bar_fg_color="#020F43", calendar_fg_color="#020F43", corner_radius=30,
+                                  title_bar_corner_radius=10, calendar_corner_radius=10, calendar_border_color="white",
+                                  calendar_border_width=3, calendar_label_pad=5,
+                                  today_fg_color="white", today_text_color="black")
     calendar_widget.pack()
 
     window.mainloop()
