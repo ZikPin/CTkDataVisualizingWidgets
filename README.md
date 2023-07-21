@@ -49,3 +49,31 @@ values = [49, 76, 61, 65, 51, 24, 9, 29, 53, 24]
 CTkGraph(window, values, width=250, height=200, fg_color="#FF7761", graph_color="#FF7761",
          graph_fg_color="#FF5330", title="Screentime", title_font_size=30, corner_radius=20).pack(side="left", padx=20, pady=20)
 ```
+## CTkChart
+This is widget to create a chart representation of a dict[str, int]. It takes str of the dict as a key and a title
+for certain stat and int or float for that matter as the value and draws it on the canvas. There are also
+indicators like average and max value.
+
+You can also set title, if you do not define it, it wont be rendered.
+
+There are two values with tuple[bool, bool] format:
+- stat_info_show: first bool is responsible for drawing the value in the stat, second for drawing title
+- show_indicators: first bool is responsible for max value, second for average.
+
+Default view on the left and with customization on the right:
+
+![image](https://github.com/ZikPin/Custom-widgets-for-CTk/assets/65452275/e40ea973-77d0-42c4-b740-535c15ad5748)
+
+Example code to create the widget:
+
+```
+window = ctk.CTk()
+window.title("Calendar Widget")
+ctk.set_appearance_mode("dark")
+
+value = {'JJ': 5, 'OO': 0, 'WW': 7, 'TT': 3, 'GG': 15, 'FF': 10, 'HH': 1, 'PP': 12, "AA": 4}
+CTkChart(window, value, corner_radius=20, fg_color="#032680", stat_color="#1D6FFF", chart_fg_color="#032680",
+         show_indicators=(False, True), stat_info_show=(False, True), chart_arrow="none", border_width=2,
+         border_color="white", indicator_line_color="#1942AC", indicator_text_color="#020F43", stat_width=15,
+         stat_title_color="#1D6FFF", chart_axis_width=3, width=300, height=200).pack(side="left", pady=20, padx=20)
+```
