@@ -3,6 +3,7 @@ import calendar
 from datetime import datetime
 import tkinter as tk
 
+
 class CTkCalendar(ctk.CTkFrame):
     """
     Calendar widget to display certain month, each day is rendered as Label.
@@ -121,20 +122,7 @@ class CTkCalendar(ctk.CTkFrame):
         for row in range(len(current_month)):
             for column in range(7):
                 if current_month[row][column] != 0:
-                    if self.today_fg_color is not None and self.year == self.today[2] and self.month == self.today[1] \
-                            and current_month[row][column] == self.today[0]:
-                        label = ctk.CTkLabel(calendar_frame, text=str(current_month[row][column]), corner_radius=5,
-                                             fg_color=self.today_fg_color, font=ctk.CTkFont("Arial", 11),
-                                             text_color=self.today_text_color)
-                    else:
-                        label = ctk.CTkLabel(calendar_frame, text=str(current_month[row][column]), corner_radius=5,
-                                             fg_color=self.calendar_text_fg_color, font=ctk.CTkFont("Arial", 11),
-                                             text_color=self.calendar_text_color)
-
-                    self.labels_by_date[(current_month[row][column], self.month, self.year)] = label
-
-                    label.grid(row=row, column=column, sticky="nsew", padx=self.calendar_label_pad,
-                               pady=self.calendar_label_pad)
+                    self.setup_label_normal(calendar_frame, current_month[row][column], row, column)
 
         calendar_frame.place(relx=0.5, rely=0.97, anchor="s", relheight=0.75, relwidth=0.95)
 
@@ -158,3 +146,23 @@ class CTkCalendar(ctk.CTkFrame):
         date = str(datetime.now()).split()
         year, month, day = date[0].split("-")
         return int(day), int(month), int(year)
+
+    def date_is_today(self, date: tuple) -> bool:
+        if date[2] == self.today[2] and date[1] == self.today[1] and date[0] == self.today[0]:
+            return True
+        return False
+
+    # creating normal date labels for normal calendar
+    def setup_label_normal(self, frame, day, row, column):
+        if self.today_fg_color is not None and self.date_is_today((day, self.month, self.year)):
+            ctk.CTkLabel(frame, text=str(day), corner_radius=5,
+                         fg_color=self.today_fg_color, font=ctk.CTkFont("Arial", 11),
+                         text_color=self.today_text_color).grid(row=row, column=column, sticky="nsew",
+                                                                padx=self.calendar_label_pad,
+                                                                pady=self.calendar_label_pad)
+        else:
+            ctk.CTkLabel(frame, text=str(day), corner_radius=5,
+                         fg_color=self.calendar_text_fg_color, font=ctk.CTkFont("Arial", 11),
+                         text_color=self.calendar_text_color).grid(row=row, column=column, sticky="nsew",
+                                                                   padx=self.calendar_label_pad,
+                                                                   pady=self.calendar_label_pad)
