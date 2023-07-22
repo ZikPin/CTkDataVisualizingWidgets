@@ -1,5 +1,5 @@
-# Custom-widgets-for-CTk
-Custom calendar, graph and chart widgets
+# CTkDataVisualizingWidgets
+**Custom data visualizing widgets like calendar, graph and chart.**
 
 ## Calendar widget
 A calendar widget consists of two parts title_bar and calendar frame. You can customize virtually everything in the widget. There is 
@@ -13,7 +13,10 @@ To use just init the class and pass the `parent` (the only required argument). T
 widgets inside the title bar and the ones starting with the calendar are responsible for the frame where the calendar is displayed
 
 Creating the customized widget on the preview:
-```
+```python
+from CTkDataVisualizingWidgets import *
+import customtkinter as ctk
+
 window = ctk.CTk()
 window.title("Calendar Widget")
 ctk.set_appearance_mode("dark")
@@ -39,7 +42,10 @@ Default view on left and with customization on the right:
 ![image](https://github.com/ZikPin/Custom-widgets-for-CTk/assets/65452275/17b46820-d881-4f27-8ea9-7dd572d9d704)
 
 To use just define parent and supply with list of integers. Example code:
-```
+```python
+from CTkDataVisualizingWidgets import *
+import customtkinter as ctk
+
 window = ctk.CTk()
 window.title("Calendar Widget")
 ctk.set_appearance_mode("dark")
@@ -48,6 +54,8 @@ values = [49, 76, 61, 65, 51, 24, 9, 29, 53, 24]
 
 CTkGraph(window, values, width=250, height=200, fg_color="#FF7761", graph_color="#FF7761",
          graph_fg_color="#FF5330", title="Screentime", title_font_size=30, corner_radius=20).pack(side="left", padx=20, pady=20)
+
+window.mainloop()
 ```
 ## CTkChart
 This is widget to create a chart representation of a dict[str, int]. It takes str of the dict as a key and a title
@@ -66,7 +74,10 @@ Default view on the left and with customization on the right:
 
 Example code to create the widget:
 
-```
+```python
+from CTkDataVisualizingWidgets import *
+import customtkinter as ctk
+
 window = ctk.CTk()
 window.title("Calendar Widget")
 ctk.set_appearance_mode("dark")
@@ -76,4 +87,6 @@ CTkChart(window, value, corner_radius=20, fg_color="#032680", stat_color="#1D6FF
          show_indicators=(False, True), stat_info_show=(False, True), chart_arrow="none", border_width=2,
          border_color="white", indicator_line_color="#1942AC", indicator_text_color="#020F43", stat_width=15,
          stat_title_color="#1D6FFF", chart_axis_width=3, width=300, height=200).pack(side="left", pady=20, padx=20)
+
+window.mainloop()
 ```
