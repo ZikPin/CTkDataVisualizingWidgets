@@ -1,7 +1,7 @@
 # CTkDataVisualizingWidgets
 **Custom data visualizing widgets like calendar, graph and chart.**
 
-## Calendar widget
+## CTkCalendar
 A calendar widget consists of two parts title_bar and calendar frame. You can customize virtually everything in the widget. There is 
 also an option to define the current day, if you define today_fg_color
 
